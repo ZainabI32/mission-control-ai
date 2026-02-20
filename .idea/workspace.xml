@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Added ai_engine.py file">
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Updated app.py to connect it to ai_engine.py">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ai_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai_engine.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +120,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1771508628083</updated>
-      <workItem from="1771508629142" duration="9195000" />
+      <workItem from="1771508629142" duration="12705000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Flask app setup">
       <option name="closed" value="true" />
@@ -145,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771597056966</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Updated app.py to connect it to ai_engine.py">
+      <option name="closed" value="true" />
+      <created>1771597549299</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1771597549299</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,20 +175,10 @@
     <MESSAGE value="Initial Flask app setup" />
     <MESSAGE value="Added API key to app for OpenAI" />
     <MESSAGE value="Added ai_engine.py file" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added ai_engine.py file" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>8</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Updated app.py to connect it to ai_engine.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated app.py to connect it to ai_engine.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771592003648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771598716846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
