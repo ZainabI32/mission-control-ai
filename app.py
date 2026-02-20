@@ -1,15 +1,12 @@
-from flask import Flask, render_template, jsonify
-from openai import OpenAI
-import os
+from flask import Flask, jsonify
 from dotenv import load_dotenv
+import os
+from ai_engine import generate_briefing
 
 load_dotenv()
 
 app = Flask(__name__)
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-# Mock team data
 team_data = """
 Project Alpha:
 - Deadline in 3 days
@@ -28,9 +25,9 @@ Messages:
 @app.route("/")
 def home():
     return """
-    <h2>Mission Control Dashboard</h2>
+    <h2>🛰 Mission Control Dashboard</h2>
     <button onclick="generate()">Generate AI Briefing</button>
-    <pre id="output"></pre>
+    <pre id="output" style="white-space: pre-wrap;"></pre>
 
     <script>
     async function generate() {
@@ -43,27 +40,8 @@ def home():
 
 @app.route("/briefing")
 def briefing():
-
-    prompt = f"""
-    You are an AI Mission Control assistant.
-
-    Analyse the following team data and:
-    1. Identify the top 3 urgent issues
-    2. Detect potential burnout signals
-    3. Highlight deadline risks
-    4. Provide a concise executive summary
-    5. Recommend actions for the manager
-
-    Data:
-    {team_data}
-    """
-
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    return jsonify({"briefing": response.choices[0].message.content})
+    briefing_text = generate_briefing(team_data)
+    return jsonify({"briefing": briefing_text})
 
 if __name__ == "__main__":
     app.run(debug=True)
