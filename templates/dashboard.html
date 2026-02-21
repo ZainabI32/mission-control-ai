@@ -4,17 +4,18 @@
     <title>AI Mission Control</title>
     <style>
         body {
-            font-family: Arial;
+            font-family: 'Segoe UI', sans-serif;
             margin: 40px;
-            background: #f4f6f8;
+            background-color: #f4f6f9;
         }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
         }
 
         button {
@@ -25,30 +26,112 @@
             color: white;
             border-radius: 6px;
             cursor: pointer;
+            margin-bottom: 30px;
         }
 
         button:hover {
             background: #1d4ed8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .loading {
+            font-style: italic;
+            color: #666;
         }
     </style>
 </head>
 <body>
 
 <h1>🛰 AI Mission Control</h1>
-<p>Decision intelligence for modern managers</p>
+<p class="subtitle">Executive decision intelligence dashboard</p>
 
-<button onclick="generate()">Generate Briefing</button>
+<button onclick="generate()">Generate Mission Briefing</button>
 
-<div class="card">
-    <pre id="output" style="white-space: pre-wrap;"></pre>
+<div class="grid">
+    <div class="card">
+        <h2>Executive Summary</h2>
+        <div id="summary"></div>
+    </div>
+
+    <div class="card">
+        <h2>Top 3 Urgent Issues</h2>
+        <div id="urgent"></div>
+    </div>
+
+    <div class="card">
+        <h2>Burnout Signals</h2>
+        <div id="burnout"></div>
+    </div>
+
+    <div class="card">
+        <h2>Deadline Risks</h2>
+        <div id="deadlines"></div>
+    </div>
+
+    <div class="card">
+        <h2>Recommended Actions</h2>
+        <div id="actions"></div>
+    </div>
 </div>
 
 <script>
 async function generate() {
-    document.getElementById("output").innerText = "Generating briefing...";
+
+    document.getElementById("summary").innerHTML = "<span class='loading'>Generating...</span>";
+    document.getElementById("urgent").innerHTML = "";
+    document.getElementById("burnout").innerHTML = "";
+    document.getElementById("deadlines").innerHTML = "";
+    document.getElementById("actions").innerHTML = "";
+
     const res = await fetch("/briefing");
     const data = await res.json();
-    document.getElementById("output").innerText = data.briefing;
+
+    const text = data.briefing;
+
+    // Split sections using headings
+    const sections = text.split(/\n(?=[A-Z ]+:)/);
+
+    sections.forEach(section => {
+        if (section.includes("EXECUTIVE SUMMARY")) {
+            document.getElementById("summary").innerText =
+                section.replace("EXECUTIVE SUMMARY:", "").trim();
+        }
+        if (section.includes("TOP 3 URGENT ISSUES")) {
+            document.getElementById("urgent").innerText =
+                section.replace("TOP 3 URGENT ISSUES:", "").trim();
+        }
+        if (section.includes("BURNOUT SIGNALS")) {
+            document.getElementById("burnout").innerText =
+                section.replace("BURNOUT SIGNALS:", "").trim();
+        }
+        if (section.includes("DEADLINE RISKS")) {
+            document.getElementById("deadlines").innerText =
+                section.replace("DEADLINE RISKS:", "").trim();
+        }
+        if (section.includes("RECOMMENDED ACTIONS")) {
+            document.getElementById("actions").innerText =
+                section.replace("RECOMMENDED ACTIONS:", "").trim();
+        }
+    });
 }
 </script>
 
