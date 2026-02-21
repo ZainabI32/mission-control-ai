@@ -63,6 +63,27 @@
 
 <h1>🛰 AI Mission Control</h1>
 <p class="subtitle">Executive decision intelligence dashboard</p>
+<textarea id="teamInput" rows="10" style="
+    width:100%;
+    padding:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    margin-bottom:20px;
+    font-family: monospace;
+">
+Project Alpha:
+- Deadline in 3 days
+- 2 tasks delayed
+- Sarah worked past midnight 3 times this week
+
+Project Beta:
+- On track
+- Tom handling 7 active tasks
+
+Messages:
+- "I'm overwhelmed"
+- "We might miss the client deadline"
+</textarea>
 
 <button onclick="generate()">Generate Mission Briefing</button>
 
@@ -96,18 +117,25 @@
 <script>
 async function generate() {
 
+    const teamData = document.getElementById("teamInput").value;
+
     document.getElementById("summary").innerHTML = "<span class='loading'>Generating...</span>";
     document.getElementById("urgent").innerHTML = "";
     document.getElementById("burnout").innerHTML = "";
     document.getElementById("deadlines").innerHTML = "";
     document.getElementById("actions").innerHTML = "";
 
-    const res = await fetch("/briefing");
-    const data = await res.json();
+    const res = await fetch("/briefing", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ team_data: teamData })
+    });
 
+    const data = await res.json();
     const text = data.briefing;
 
-    // Split sections using headings
     const sections = text.split(/\n(?=[A-Z ]+:)/);
 
     sections.forEach(section => {
@@ -132,6 +160,7 @@ async function generate() {
                 section.replace("RECOMMENDED ACTIONS:", "").trim();
         }
     });
+
 }
 </script>
 

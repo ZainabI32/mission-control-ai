@@ -26,8 +26,9 @@ def home():
     return render_template("dashboard.html")
 
 
-@app.route("/briefing")
+@app.route("/briefing", methods=["POST"])
 def briefing():
+    team_data = request.json["team_data"]
     briefing_text = generate_briefing(team_data)
     return jsonify({"briefing": briefing_text})
 
