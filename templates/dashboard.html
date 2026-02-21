@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Mission Control</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 40px;
+            background: #f4f6f8;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🛰 AI Mission Control</h1>
+<p>Decision intelligence for modern managers</p>
+
+<button onclick="generate()">Generate Briefing</button>
+
+<div class="card">
+    <pre id="output" style="white-space: pre-wrap;"></pre>
+</div>
+
+<script>
+async function generate() {
+    document.getElementById("output").innerText = "Generating briefing...";
+    const res = await fetch("/briefing");
+    const data = await res.json();
+    document.getElementById("output").innerText = data.briefing;
+}
+</script>
+
+</body>
+</html>

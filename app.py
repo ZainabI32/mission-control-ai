@@ -1,6 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from dotenv import load_dotenv
-import os
 from ai_engine import generate_briefing
 
 load_dotenv()
@@ -24,24 +23,14 @@ Messages:
 
 @app.route("/")
 def home():
-    return """
-    <h2>🛰 Mission Control Dashboard</h2>
-    <button onclick="generate()">Generate AI Briefing</button>
-    <pre id="output" style="white-space: pre-wrap;"></pre>
+    return render_template("dashboard.html")
 
-    <script>
-    async function generate() {
-        const res = await fetch("/briefing");
-        const data = await res.json();
-        document.getElementById("output").innerText = data.briefing;
-    }
-    </script>
-    """
 
 @app.route("/briefing")
 def briefing():
     briefing_text = generate_briefing(team_data)
     return jsonify({"briefing": briefing_text})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

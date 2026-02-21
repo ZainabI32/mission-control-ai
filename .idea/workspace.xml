@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="added load_dotenv() to ai_engine.py to ensure environment variables get loaded,API key is read, OpenAI client is created">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ai_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai_engine.py" afterDir="false" />
+    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="update prompt ending in ai_engine.py">
+      <change afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +17,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -42,7 +43,7 @@
     <urls />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 8
@@ -54,6 +55,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.app.executor": "Run",
     "RunOnceActivity.MCP Project settings loaded": "true",
@@ -69,6 +71,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
@@ -120,7 +123,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1771508628083</updated>
-      <workItem from="1771508629142" duration="13795000" />
+      <workItem from="1771508629142" duration="14459000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Flask app setup">
       <option name="closed" value="true" />
@@ -162,7 +165,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771606086599</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="update prompt ending in ai_engine.py">
+      <option name="closed" value="true" />
+      <created>1771686527184</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1771686527184</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,9 +196,10 @@
     <MESSAGE value="Added ai_engine.py file" />
     <MESSAGE value="Updated app.py to connect it to ai_engine.py" />
     <MESSAGE value="added load_dotenv() to ai_engine.py to ensure environment variables get loaded,API key is read, OpenAI client is created" />
-    <option name="LAST_COMMIT_MESSAGE" value="added load_dotenv() to ai_engine.py to ensure environment variables get loaded,API key is read, OpenAI client is created" />
+    <MESSAGE value="update prompt ending in ai_engine.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="update prompt ending in ai_engine.py" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771686420337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771687077002" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
