@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from ai_engine import generate_briefing, generate_trends
+from ai_engine import generate_briefing, generate_trends, generate_risk_score
 
 app = Flask(__name__)
 CORS(app)
@@ -19,6 +19,14 @@ def create_trends():
     team_data = data.get("teamData")
     trends = generate_trends(team_data)
     return jsonify({"trends": trends})
+
+
+@app.route("/api/risk", methods=["POST"])
+def create_risk():
+    data = request.get_json()
+    team_data = data.get("teamData")
+    score = generate_risk_score(team_data)
+    return jsonify({"score": score})
 
 
 @app.route("/", methods=["GET"])

@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>AI Mission Control</title>
+
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
             margin: 40px;
             background-color: #f4f6f9;
         }
+
         h1 { margin-bottom: 5px; }
         .subtitle { color: #666; margin-bottom: 30px; }
+
         button {
             padding: 12px 20px;
             font-size: 16px;
@@ -21,18 +24,22 @@
             cursor: pointer;
             margin-bottom: 30px;
         }
+
         button:hover { background: #1d4ed8; }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 20px;
         }
+
         .card {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
+
         .card h2 {
             margin-top: 0;
             font-size: 18px;
@@ -40,8 +47,34 @@
             padding-bottom: 10px;
         }
 
- </style>
+        .loading { font-style: italic; color: #666; }
+
+        /* Risk colours */
+        .risk-high { color: #d32f2f; font-weight: bold; }
+        .risk-medium { color: #f57c00; font-weight: bold; }
+        .risk-low { color: #388e3c; font-weight: bold; }
+
+        /* Background highlights */
+        .bg-high { background: #ffebee; padding: 4px 6px; border-radius: 4px; }
+        .bg-medium { background: #fff3e0; padding: 4px 6px; border-radius: 4px; }
+        .bg-low { background: #e8f5e9; padding: 4px 6px; border-radius: 4px; }
+
+        /* Risk meter */
+        .risk-meter {
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background: #ddd;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .risk-meter-fill {
+            height: 100%;
+            transition: width 0.6s ease;
+        }
+    </style>
 </head>
+
 <body>
 
 <h1>🛰 AI Mission Control</h1>
@@ -78,11 +111,70 @@ Messages:
     <div class="card"><h2>Deadline Risks</h2><div id="deadlines"></div></div>
     <div class="card"><h2>Recommended Actions</h2><div id="actions"></div></div>
 
-    <!-- NEW TREND CARD -->
     <div class="card"><h2>Trend Signals</h2><div id="trends"></div></div>
+
+    <div class="card">
+        <h2>Overall Risk Score</h2>
+        <div id="riskScoreText"></div>
+        <div class="risk-meter">
+            <div id="riskMeterFill" class="risk-meter-fill"></div>
+        </div>
+    </div>
 </div>
 
 <script>
+function classifyRisk(line) {
+    const lower = line.toLowerCase();
+
+    if (
+        lower.includes("deadline") ||
+        lower.includes("delay") ||
+        lower.includes("risk") ||
+        lower.includes("critical") ||
+        lower.includes("urgent") ||
+        lower.includes("miss")
+    ) return "high";
+
+    if (
+        lower.includes("overwhelmed") ||
+        lower.includes("burnout") ||
+        lower.includes("stress") ||
+        lower.includes("late night") ||
+        lower.includes("too many tasks")
+    ) return "medium";
+
+    return "low";
+}
+
+function riskIcon(level) {
+    if (level === "high") return "🔥 ";
+    if (level === "medium") return "⚠️ ";
+    return "🟢 ";
+}
+
+function renderSection(sectionId, items) {
+    const container = document.getElementById(sectionId);
+    container.innerHTML = "";
+
+    if (!items || items.length === 0) {
+        container.innerText = "Not found";
+        return;
+    }
+
+    items.forEach(line => {
+        const level = classifyRisk(line);
+        const div = document.createElement("div");
+
+        div.innerText = riskIcon(level) + line;
+
+        if (level === "high") div.classList.add("risk-high", "bg-high");
+        if (level === "medium") div.classList.add("risk-medium", "bg-medium");
+        if (level === "low") div.classList.add("risk-low", "bg-low");
+
+        container.appendChild(div);
+    });
+}
+
 async function generate() {
     const teamData = document.getElementById("teamInput").value;
 
@@ -92,6 +184,7 @@ async function generate() {
     document.getElementById("deadlines").innerHTML = "";
     document.getElementById("actions").innerHTML = "";
     document.getElementById("trends").innerHTML = "";
+    document.getElementById("riskScoreText").innerHTML = "";
 
     // --- MAIN BRIEFING ---
     const res = await fetch("http://127.0.0.1:5000/api/briefing", {
@@ -103,7 +196,6 @@ async function generate() {
     const data = await res.json();
     const text = data.briefing;
 
-    // Remove markdown bold
     const clean = text.replace(/\*\*/g, "");
     const lines = clean.split("\n").map(l => l.trim());
 
@@ -127,11 +219,11 @@ async function generate() {
         }
     }
 
-    document.getElementById("summary").innerText = sections["EXECUTIVE SUMMARY"].join("\n");
-    document.getElementById("urgent").innerText = sections["TOP 3 URGENT ISSUES"].join("\n");
-    document.getElementById("burnout").innerText = sections["BURNOUT SIGNALS"].join("\n");
-    document.getElementById("deadlines").innerText = sections["DEADLINE RISKS"].join("\n");
-    document.getElementById("actions").innerText = sections["RECOMMENDED ACTIONS"].join("\n");
+    renderSection("summary", sections["EXECUTIVE SUMMARY"]);
+    renderSection("urgent", sections["TOP 3 URGENT ISSUES"]);
+    renderSection("burnout", sections["BURNOUT SIGNALS"]);
+    renderSection("deadlines", sections["DEADLINE RISKS"]);
+    renderSection("actions", sections["RECOMMENDED ACTIONS"]);
 
     // --- TREND DETECTION ---
     const trendRes = await fetch("http://127.0.0.1:5000/api/trends", {
@@ -142,9 +234,34 @@ async function generate() {
 
     const trendData = await trendRes.json();
     document.getElementById("trends").innerText = trendData.trends;
+
+    // --- RISK SCORE ---
+    const riskRes = await fetch("http://127.0.0.1:5000/api/risk", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamData: teamData })
+    });
+
+    const riskData = await riskRes.json();
+
+    // CLEAN OUTPUT
+    let raw = riskData.score || "";
+    raw = raw.replace(/[^0-9]/g, "");
+    let score = parseInt(raw);
+    if (isNaN(score)) score = 0;
+
+    document.getElementById("riskScoreText").innerText = "Risk Score: " + score + "/100";
+
+    const fill = document.getElementById("riskMeterFill");
+    fill.style.width = score + "%";
+
+    if (score >= 70) fill.style.background = "#d32f2f";
+    else if (score >= 40) fill.style.background = "#f57c00";
+    else fill.style.background = "#388e3c";
 }
 </script>
 
 </body>
 </html>
+
 

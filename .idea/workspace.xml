@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Changed hardcoded data into interactive AI analysis engine">
+    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Added trend signals section">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ai_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai_engine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
@@ -151,7 +151,7 @@
       <option name="presentableId" value="Default" />
       <updated>1771508628083</updated>
       <workItem from="1771508629142" duration="26312000" />
-      <workItem from="1771771521507" duration="9024000" />
+      <workItem from="1771771521507" duration="10539000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Flask app setup">
       <option name="closed" value="true" />
@@ -233,7 +233,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771709273560</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Added trend signals section">
+      <option name="closed" value="true" />
+      <created>1771786564311</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1771786564311</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,7 +269,8 @@
     <MESSAGE value="created template directory and added dashboard.html, edited app route in app.py to return dashboard.html" />
     <MESSAGE value="Updated dashboard.html: added Executive summary card, Urgent issues card, Burnout card, Deadline card,Actions card." />
     <MESSAGE value="Changed hardcoded data into interactive AI analysis engine" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed hardcoded data into interactive AI analysis engine" />
+    <MESSAGE value="Added trend signals section" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added trend signals section" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771781493831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
