@@ -4,6 +4,7 @@ from ai_engine import (
     generate_briefing,
     generate_trends,
     generate_risk_score,
+    generate_deadline_pressure,
     generate_blindspots
 )
 
@@ -32,6 +33,14 @@ def create_risk():
     team_data = data.get("teamData")
     score = generate_risk_score(team_data)
     return jsonify({"score": score})
+
+
+@app.route("/api/deadline_pressure", methods=["POST"])
+def create_deadline_pressure_route():
+    data = request.get_json()
+    team_data = data.get("teamData")
+    pressure = generate_deadline_pressure(team_data)
+    return jsonify({"pressure": pressure})
 
 
 @app.route("/api/blindspots", methods=["POST"])

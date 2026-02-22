@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Added colour coded risks and risk score generation.">
+    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Added trend signals section">
+      <change afterPath="$PROJECT_DIR$/templates/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ai_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai_engine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +22,7 @@
       <list>
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -37,25 +40,27 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="deadline-pressure-gauge" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "ZainabI32"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ZainabI32&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ZainabI32/mission-control-ai.git",
-    "accountId": "f98132bd-53fb-493c-9b59-81fcfb962d0c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ZainabI32/mission-control-ai.git&quot;,
+    &quot;accountId&quot;: &quot;f98132bd-53fb-493c-9b59-81fcfb962d0c&quot;
   }
-}]]></component>
+}</component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/ai_engine.py" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/app.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/templates/index.html" root0="SKIP_INSPECTION" />
   </component>
   <component name="McpProjectServerCommands">
     <commands />
@@ -84,7 +89,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "blind-spot-detector",
+    "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "C:/Users/zaina/PycharmProjects/PythonProject1",
     "node.js.detected.package.eslint": "true",
@@ -152,7 +157,7 @@
       <option name="presentableId" value="Default" />
       <updated>1771508628083</updated>
       <workItem from="1771508629142" duration="26312000" />
-      <workItem from="1771771521507" duration="13388000" />
+      <workItem from="1771771521507" duration="10539000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Flask app setup">
       <option name="closed" value="true" />
@@ -242,15 +247,7 @@
       <option name="project" value="LOCAL" />
       <updated>1771786564311</updated>
     </task>
-    <task id="LOCAL-00012" summary="Added colour coded risks and risk score generation.">
-      <option name="closed" value="true" />
-      <created>1771788177722</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1771788177722</updated>
-    </task>
-    <option name="localTasksCounter" value="13" />
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,10 +276,9 @@
     <MESSAGE value="Updated dashboard.html: added Executive summary card, Urgent issues card, Burnout card, Deadline card,Actions card." />
     <MESSAGE value="Changed hardcoded data into interactive AI analysis engine" />
     <MESSAGE value="Added trend signals section" />
-    <MESSAGE value="Added colour coded risks and risk score generation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added colour coded risks and risk score generation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added trend signals section" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771781493831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771796254621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

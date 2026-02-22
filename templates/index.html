@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Mission Control</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<h1> 🌠 AI Mission Control </h1>
+<p class="subtitle">Executive decision intelligence dashboard</p>
+
+<textarea id="teamInput" rows="10" class="input-box">
+Project Alpha:
+- Deadline in 3 days
+- 2 tasks delayed
+- Sarah worked past midnight 3 times this week
+
+Project Beta:
+- On track
+- Tom handling 7 active tasks
+
+Messages:
+- "I'm overwhelmed"
+- "We might miss the client deadline"
+</textarea>
+
+<button onclick="generate()">Generate Mission Briefing</button>
+
+<div class="grid">
+
+    <div class="card">
+        <h2>Executive Summary</h2>
+        <div id="summary"></div>
+    </div>
+
+    <div class="card">
+        <h2>Top 3 Urgent Issues</h2>
+        <div id="urgent"></div>
+    </div>
+
+    <div class="card">
+        <h2>Burnout Signals</h2>
+        <div id="burnout"></div>
+    </div>
+
+    <div class="card">
+        <h2>Deadline Risks</h2>
+        <div id="deadlines"></div>
+    </div>
+
+    <div class="card">
+        <h2>Recommended Actions</h2>
+        <div id="actions"></div>
+    </div>
+
+    <div class="card">
+        <h2>Trend Signals</h2>
+        <div id="trends"></div>
+    </div>
+
+    <div class="card">
+        <h2>Blind‑Spot Detector</h2>
+        <div id="blindspots"></div>
+    </div>
+
+    <div class="card">
+        <h2>Risk & Deadline Pressure</h2>
+
+        <strong>Risk Score</strong>
+        <div id="riskScoreText"></div>
+        <div class="risk-meter">
+            <div id="riskMeterFill" class="risk-meter-fill"></div>
+        </div>
+
+        <br>
+
+        <strong>Deadline Pressure</strong>
+        <div id="deadlinePressureText"></div>
+        <div class="risk-meter">
+            <div id="deadlineMeterFill" class="risk-meter-fill"></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Workload Distribution</h2>
+        <canvas id="workloadChart"></canvas>
+    </div>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>

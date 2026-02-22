@@ -1,141 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>AI Mission Control</title>
-
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 40px;
-            background-color: #f4f6f9;
-        }
-
-        h1 { margin-bottom: 5px; }
-        .subtitle { color: #666; margin-bottom: 30px; }
-
-        button {
-            padding: 12px 20px;
-            font-size: 16px;
-            border: none;
-            background: #2563eb;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-bottom: 30px;
-        }
-
-        button:hover { background: #1d4ed8; }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .card h2 {
-            margin-top: 0;
-            font-size: 18px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .loading { font-style: italic; color: #666; }
-
-        /* Risk colours */
-        .risk-high { color: #d32f2f; font-weight: bold; }
-        .risk-medium { color: #f57c00; font-weight: bold; }
-        .risk-low { color: #388e3c; font-weight: bold; }
-
-        /* Background highlights */
-        .bg-high { background: #ffebee; padding: 4px 6px; border-radius: 4px; }
-        .bg-medium { background: #fff3e0; padding: 4px 6px; border-radius: 4px; }
-        .bg-low { background: #e8f5e9; padding: 4px 6px; border-radius: 4px; }
-
-        /* Risk meter */
-        .risk-meter {
-            width: 100%;
-            height: 12px;
-            border-radius: 6px;
-            background: #ddd;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        .risk-meter-fill {
-            height: 100%;
-            transition: width 0.6s ease;
-        }
-    </style>
-</head>
-
-<body>
-
-<h1>🛰 AI Mission Control</h1>
-<p class="subtitle">Executive decision intelligence dashboard</p>
-
-<textarea id="teamInput" rows="10" style="
-    width:100%;
-    padding:15px;
-    border-radius:8px;
-    border:1px solid #ccc;
-    margin-bottom:20px;
-    font-family: monospace;
-">
-Project Alpha:
-- Deadline in 3 days
-- 2 tasks delayed
-- Sarah worked past midnight 3 times this week
-
-Project Beta:
-- On track
-- Tom handling 7 active tasks
-
-Messages:
-- "I'm overwhelmed"
-- "We might miss the client deadline"
-</textarea>
-
-<button onclick="generate()">Generate Mission Briefing</button>
-
-<div class="grid">
-    <div class="card"><h2>Executive Summary</h2><div id="summary"></div></div>
-    <div class="card"><h2>Top 3 Urgent Issues</h2><div id="urgent"></div></div>
-    <div class="card"><h2>Burnout Signals</h2><div id="burnout"></div></div>
-    <div class="card"><h2>Deadline Risks</h2><div id="deadlines"></div></div>
-    <div class="card"><h2>Recommended Actions</h2><div id="actions"></div></div>
-
-    <div class="card"><h2>Trend Signals</h2><div id="trends"></div></div>
-
-    <div class="card">
-        <h2>Blind‑Spot Detector</h2>
-        <div id="blindspots"></div>
-    </div>
-
-    <div class="card">
-        <h2>Overall Risk Score</h2>
-        <div id="riskScoreText"></div>
-        <div class="risk-meter">
-            <div id="riskMeterFill" class="risk-meter-fill"></div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>Workload Distribution</h2>
-        <canvas id="workloadChart"></canvas>
-    </div>
-</div>
-
-<script>
+// ------------------------------------------------------
+// RISK CLASSIFICATION
+// ------------------------------------------------------
 function classifyRisk(line) {
     const lower = line.toLowerCase();
 
@@ -160,11 +25,14 @@ function classifyRisk(line) {
 }
 
 function riskIcon(level) {
-    if (level === "high") return "🔥 ";
-    if (level === "medium") return "⚠️ ";
-    return "🟢 ";
+    if (level === "high") return "🟥 ";
+    if (level === "medium") return "🟨 ";
+    return "🟩 ";
 }
 
+// ------------------------------------------------------
+// RENDER SECTIONS (EXEC SUMMARY, URGENT, BURNOUT, ETC.)
+// ------------------------------------------------------
 function renderSection(sectionId, items) {
     const container = document.getElementById(sectionId);
     container.innerHTML = "";
@@ -188,11 +56,15 @@ function renderSection(sectionId, items) {
     });
 }
 
+// ------------------------------------------------------
+// WORKLOAD EXTRACTION
+// ------------------------------------------------------
 function extractWorkload(teamData) {
     const lines = teamData.split("\n").map(l => l.trim());
     const workload = {};
 
     lines.forEach(line => {
+        // Match: "Alice has 5 tasks"
         const match = line.match(/(\w+)\s.*?(\d+)\s+(tasks?|issues?|items?)/i);
 
         if (match) {
@@ -203,6 +75,7 @@ function extractWorkload(teamData) {
             workload[person] += count;
         }
 
+        // Burnout signals add +1 workload
         const burnoutMatch = line.match(/(\w+)\s.*(midnight|overwhelmed|burnout|late)/i);
         if (burnoutMatch) {
             const person = burnoutMatch[1];
@@ -214,6 +87,9 @@ function extractWorkload(teamData) {
     return workload;
 }
 
+// ------------------------------------------------------
+// WORKLOAD CHART
+// ------------------------------------------------------
 let workloadChart = null;
 
 function drawWorkloadChart(workload) {
@@ -243,9 +119,13 @@ function drawWorkloadChart(workload) {
     });
 }
 
+// ------------------------------------------------------
+// MAIN GENERATE FUNCTION
+// ------------------------------------------------------
 async function generate() {
     const teamData = document.getElementById("teamInput").value;
 
+    // Reset UI
     document.getElementById("summary").innerHTML = "<span class='loading'>Generating...</span>";
     document.getElementById("urgent").innerHTML = "";
     document.getElementById("burnout").innerHTML = "";
@@ -254,15 +134,19 @@ async function generate() {
     document.getElementById("trends").innerHTML = "";
     document.getElementById("blindspots").innerHTML = "";
     document.getElementById("riskScoreText").innerHTML = "";
+    document.getElementById("deadlinePressureText").innerHTML = "";
 
+    // ------------------------------------------------------
+    // EXECUTIVE BRIEFING
+    // ------------------------------------------------------
     const res = await fetch("http://127.0.0.1:5000/api/briefing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teamData: teamData })
+        body: JSON.stringify({ teamData })
     });
 
     const data = await res.json();
-    const text = data.briefing;
+    const text = data.briefing || "";
 
     const clean = text.replace(/\*\*/g, "");
     const lines = clean.split("\n").map(l => l.trim());
@@ -278,10 +162,13 @@ async function generate() {
 
     for (let line of lines) {
         const upper = line.toUpperCase();
-        if (sections.hasOwnProperty(upper.replace(":", ""))) {
-            current = upper.replace(":", "");
+        const key = upper.replace(":", "");
+
+        if (sections.hasOwnProperty(key)) {
+            current = key;
             continue;
         }
+
         if (current && line !== "") {
             sections[current].push(line);
         }
@@ -293,38 +180,46 @@ async function generate() {
     renderSection("deadlines", sections["DEADLINE RISKS"]);
     renderSection("actions", sections["RECOMMENDED ACTIONS"]);
 
+    // ------------------------------------------------------
+    // TRENDS
+    // ------------------------------------------------------
     const trendRes = await fetch("http://127.0.0.1:5000/api/trends", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teamData: teamData })
+        body: JSON.stringify({ teamData })
     });
 
     const trendData = await trendRes.json();
-    document.getElementById("trends").innerText = trendData.trends;
+    document.getElementById("trends").innerText = trendData.trends || "No trends detected.";
 
+    // ------------------------------------------------------
+    // BLIND SPOTS
+    // ------------------------------------------------------
     const blindRes = await fetch("http://127.0.0.1:5000/api/blindspots", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teamData: teamData })
+        body: JSON.stringify({ teamData })
     });
 
     const blindData = await blindRes.json();
-    document.getElementById("blindspots").innerText = blindData.blindspots;
+    document.getElementById("blindspots").innerText = blindData.blindspots || "No blind spots detected.";
 
+    // ------------------------------------------------------
+    // RISK SCORE
+    // ------------------------------------------------------
     const riskRes = await fetch("http://127.0.0.1:5000/api/risk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ teamData: teamData })
+        body: JSON.stringify({ teamData })
     });
 
     const riskData = await riskRes.json();
-
-    let raw = riskData.score || "";
-    raw = raw.replace(/[^0-9]/g, "");
+    let raw = (riskData.score || "").replace(/[^0-9]/g, "");
     let score = parseInt(raw);
+
     if (isNaN(score)) score = 0;
 
-    document.getElementById("riskScoreText").innerText = "Risk Score: " + score + "/100";
+    document.getElementById("riskScoreText").innerText = score + "/100";
 
     const fill = document.getElementById("riskMeterFill");
     fill.style.width = score + "%";
@@ -333,12 +228,34 @@ async function generate() {
     else if (score >= 40) fill.style.background = "#f57c00";
     else fill.style.background = "#388e3c";
 
+    // ------------------------------------------------------
+    // DEADLINE PRESSURE
+    // ------------------------------------------------------
+    const pressureRes = await fetch("http://127.0.0.1:5000/api/deadline_pressure", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamData })
+    });
+
+    const pressureData = await pressureRes.json();
+    let rawPressure = (pressureData.pressure || "").replace(/[^0-9]/g, "");
+    let pressure = parseInt(rawPressure);
+
+    if (isNaN(pressure)) pressure = 50;
+    pressure = Math.max(0, Math.min(100, pressure));
+
+    document.getElementById("deadlinePressureText").innerText = pressure + "/100";
+
+    const pressureFill = document.getElementById("deadlineMeterFill");
+    pressureFill.style.width = pressure + "%";
+
+    if (pressure >= 70) pressureFill.style.background = "#d32f2f";
+    else if (pressure >= 40) pressureFill.style.background = "#f57c00";
+    else pressureFill.style.background = "#388e3c";
+
+    // ------------------------------------------------------
+    // WORKLOAD GRAPH
+    // ------------------------------------------------------
     const workload = extractWorkload(teamData);
     drawWorkloadChart(workload);
 }
-</script>
-
-</body>
-</html>
-
-
