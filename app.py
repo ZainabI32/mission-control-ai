@@ -1,6 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from ai_engine import generate_briefing, generate_trends, generate_risk_score
+from ai_engine import (
+    generate_briefing,
+    generate_trends,
+    generate_risk_score,
+    generate_blindspots
+)
 
 app = Flask(__name__)
 CORS(app)
@@ -27,6 +32,14 @@ def create_risk():
     team_data = data.get("teamData")
     score = generate_risk_score(team_data)
     return jsonify({"score": score})
+
+
+@app.route("/api/blindspots", methods=["POST"])
+def create_blindspots_route():
+    data = request.get_json()
+    team_data = data.get("teamData")
+    blindspots = generate_blindspots(team_data)
+    return jsonify({"blindspots": blindspots})
 
 
 @app.route("/", methods=["GET"])

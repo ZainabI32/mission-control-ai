@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>AI Mission Control</title>
 
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -114,11 +117,21 @@ Messages:
     <div class="card"><h2>Trend Signals</h2><div id="trends"></div></div>
 
     <div class="card">
+        <h2>Blind‑Spot Detector</h2>
+        <div id="blindspots"></div>
+    </div>
+
+    <div class="card">
         <h2>Overall Risk Score</h2>
         <div id="riskScoreText"></div>
         <div class="risk-meter">
             <div id="riskMeterFill" class="risk-meter-fill"></div>
         </div>
+    </div>
+
+    <div class="card">
+        <h2>Workload Distribution</h2>
+        <canvas id="workloadChart"></canvas>
     </div>
 </div>
 
@@ -175,6 +188,61 @@ function renderSection(sectionId, items) {
     });
 }
 
+function extractWorkload(teamData) {
+    const lines = teamData.split("\n").map(l => l.trim());
+    const workload = {};
+
+    lines.forEach(line => {
+        const match = line.match(/(\w+)\s.*?(\d+)\s+(tasks?|issues?|items?)/i);
+
+        if (match) {
+            const person = match[1];
+            const count = parseInt(match[2]);
+
+            if (!workload[person]) workload[person] = 0;
+            workload[person] += count;
+        }
+
+        const burnoutMatch = line.match(/(\w+)\s.*(midnight|overwhelmed|burnout|late)/i);
+        if (burnoutMatch) {
+            const person = burnoutMatch[1];
+            if (!workload[person]) workload[person] = 0;
+            workload[person] += 1;
+        }
+    });
+
+    return workload;
+}
+
+let workloadChart = null;
+
+function drawWorkloadChart(workload) {
+    const ctx = document.getElementById("workloadChart").getContext("2d");
+
+    if (workloadChart) workloadChart.destroy();
+
+    const labels = Object.keys(workload);
+    const values = Object.values(workload);
+
+    workloadChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Workload Units",
+                data: values,
+                backgroundColor: "#2563eb"
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
 async function generate() {
     const teamData = document.getElementById("teamInput").value;
 
@@ -184,9 +252,9 @@ async function generate() {
     document.getElementById("deadlines").innerHTML = "";
     document.getElementById("actions").innerHTML = "";
     document.getElementById("trends").innerHTML = "";
+    document.getElementById("blindspots").innerHTML = "";
     document.getElementById("riskScoreText").innerHTML = "";
 
-    // --- MAIN BRIEFING ---
     const res = await fetch("http://127.0.0.1:5000/api/briefing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -225,7 +293,6 @@ async function generate() {
     renderSection("deadlines", sections["DEADLINE RISKS"]);
     renderSection("actions", sections["RECOMMENDED ACTIONS"]);
 
-    // --- TREND DETECTION ---
     const trendRes = await fetch("http://127.0.0.1:5000/api/trends", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -235,7 +302,15 @@ async function generate() {
     const trendData = await trendRes.json();
     document.getElementById("trends").innerText = trendData.trends;
 
-    // --- RISK SCORE ---
+    const blindRes = await fetch("http://127.0.0.1:5000/api/blindspots", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamData: teamData })
+    });
+
+    const blindData = await blindRes.json();
+    document.getElementById("blindspots").innerText = blindData.blindspots;
+
     const riskRes = await fetch("http://127.0.0.1:5000/api/risk", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -244,7 +319,6 @@ async function generate() {
 
     const riskData = await riskRes.json();
 
-    // CLEAN OUTPUT
     let raw = riskData.score || "";
     raw = raw.replace(/[^0-9]/g, "");
     let score = parseInt(raw);
@@ -258,6 +332,9 @@ async function generate() {
     if (score >= 70) fill.style.background = "#d32f2f";
     else if (score >= 40) fill.style.background = "#f57c00";
     else fill.style.background = "#388e3c";
+
+    const workload = extractWorkload(teamData);
+    drawWorkloadChart(workload);
 }
 </script>
 

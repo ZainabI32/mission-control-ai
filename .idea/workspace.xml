@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Added trend signals section">
+    <list default="true" id="1037f0d6-5d37-43fc-afb0-61d26bf047e9" name="Changes" comment="Added colour coded risks and risk score generation.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ai_engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/ai_engine.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
@@ -37,7 +37,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Trend-detection" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -84,7 +84,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "ai.playground.ignore.import.keys.banner.in.settings": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "blind-spot-detector",
     "junie.onboarding.icon.badge.shown": "true",
     "last_opened_file_path": "C:/Users/zaina/PycharmProjects/PythonProject1",
     "node.js.detected.package.eslint": "true",
@@ -132,6 +132,7 @@
       <list>
         <item itemvalue="Python.app" />
         <item itemvalue="Python.app" />
+        <item itemvalue="Python.app" />
       </list>
     </recent_temporary>
   </component>
@@ -151,7 +152,7 @@
       <option name="presentableId" value="Default" />
       <updated>1771508628083</updated>
       <workItem from="1771508629142" duration="26312000" />
-      <workItem from="1771771521507" duration="10539000" />
+      <workItem from="1771771521507" duration="13388000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Flask app setup">
       <option name="closed" value="true" />
@@ -241,7 +242,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771786564311</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added colour coded risks and risk score generation.">
+      <option name="closed" value="true" />
+      <created>1771788177722</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1771788177722</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,7 +279,8 @@
     <MESSAGE value="Updated dashboard.html: added Executive summary card, Urgent issues card, Burnout card, Deadline card,Actions card." />
     <MESSAGE value="Changed hardcoded data into interactive AI analysis engine" />
     <MESSAGE value="Added trend signals section" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added trend signals section" />
+    <MESSAGE value="Added colour coded risks and risk score generation." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added colour coded risks and risk score generation." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PythonProject1$app.coverage" NAME="app Coverage Results" MODIFIED="1771781493831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
