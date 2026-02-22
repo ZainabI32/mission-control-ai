@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>AI Mission Control</title>
     <style>
         body {
@@ -8,16 +9,8 @@
             margin: 40px;
             background-color: #f4f6f9;
         }
-
-        h1 {
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
+        h1 { margin-bottom: 5px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
         button {
             padding: 12px 20px;
             font-size: 16px;
@@ -28,24 +21,18 @@
             cursor: pointer;
             margin-bottom: 30px;
         }
-
-        button:hover {
-            background: #1d4ed8;
-        }
-
+        button:hover { background: #1d4ed8; }
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 20px;
         }
-
         .card {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
-
         .card h2 {
             margin-top: 0;
             font-size: 18px;
@@ -53,16 +40,13 @@
             padding-bottom: 10px;
         }
 
-        .loading {
-            font-style: italic;
-            color: #666;
-        }
-    </style>
+ </style>
 </head>
 <body>
 
 <h1>🛰 AI Mission Control</h1>
 <p class="subtitle">Executive decision intelligence dashboard</p>
+
 <textarea id="teamInput" rows="10" style="
     width:100%;
     padding:15px;
@@ -88,35 +72,18 @@ Messages:
 <button onclick="generate()">Generate Mission Briefing</button>
 
 <div class="grid">
-    <div class="card">
-        <h2>Executive Summary</h2>
-        <div id="summary"></div>
-    </div>
+    <div class="card"><h2>Executive Summary</h2><div id="summary"></div></div>
+    <div class="card"><h2>Top 3 Urgent Issues</h2><div id="urgent"></div></div>
+    <div class="card"><h2>Burnout Signals</h2><div id="burnout"></div></div>
+    <div class="card"><h2>Deadline Risks</h2><div id="deadlines"></div></div>
+    <div class="card"><h2>Recommended Actions</h2><div id="actions"></div></div>
 
-    <div class="card">
-        <h2>Top 3 Urgent Issues</h2>
-        <div id="urgent"></div>
-    </div>
-
-    <div class="card">
-        <h2>Burnout Signals</h2>
-        <div id="burnout"></div>
-    </div>
-
-    <div class="card">
-        <h2>Deadline Risks</h2>
-        <div id="deadlines"></div>
-    </div>
-
-    <div class="card">
-        <h2>Recommended Actions</h2>
-        <div id="actions"></div>
-    </div>
+    <!-- NEW TREND CARD -->
+    <div class="card"><h2>Trend Signals</h2><div id="trends"></div></div>
 </div>
 
 <script>
 async function generate() {
-
     const teamData = document.getElementById("teamInput").value;
 
     document.getElementById("summary").innerHTML = "<span class='loading'>Generating...</span>";
@@ -124,45 +91,60 @@ async function generate() {
     document.getElementById("burnout").innerHTML = "";
     document.getElementById("deadlines").innerHTML = "";
     document.getElementById("actions").innerHTML = "";
+    document.getElementById("trends").innerHTML = "";
 
-    const res = await fetch("/briefing", {
+    // --- MAIN BRIEFING ---
+    const res = await fetch("http://127.0.0.1:5000/api/briefing", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ team_data: teamData })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamData: teamData })
     });
 
     const data = await res.json();
     const text = data.briefing;
 
-    const sections = text.split(/\n(?=[A-Z ]+:)/);
+    // Remove markdown bold
+    const clean = text.replace(/\*\*/g, "");
+    const lines = clean.split("\n").map(l => l.trim());
 
-    sections.forEach(section => {
-        if (section.includes("EXECUTIVE SUMMARY")) {
-            document.getElementById("summary").innerText =
-                section.replace("EXECUTIVE SUMMARY:", "").trim();
+    let current = null;
+    const sections = {
+        "EXECUTIVE SUMMARY": [],
+        "TOP 3 URGENT ISSUES": [],
+        "BURNOUT SIGNALS": [],
+        "DEADLINE RISKS": [],
+        "RECOMMENDED ACTIONS": []
+    };
+
+    for (let line of lines) {
+        const upper = line.toUpperCase();
+        if (sections.hasOwnProperty(upper.replace(":", ""))) {
+            current = upper.replace(":", "");
+            continue;
         }
-        if (section.includes("TOP 3 URGENT ISSUES")) {
-            document.getElementById("urgent").innerText =
-                section.replace("TOP 3 URGENT ISSUES:", "").trim();
+        if (current && line !== "") {
+            sections[current].push(line);
         }
-        if (section.includes("BURNOUT SIGNALS")) {
-            document.getElementById("burnout").innerText =
-                section.replace("BURNOUT SIGNALS:", "").trim();
-        }
-        if (section.includes("DEADLINE RISKS")) {
-            document.getElementById("deadlines").innerText =
-                section.replace("DEADLINE RISKS:", "").trim();
-        }
-        if (section.includes("RECOMMENDED ACTIONS")) {
-            document.getElementById("actions").innerText =
-                section.replace("RECOMMENDED ACTIONS:", "").trim();
-        }
+    }
+
+    document.getElementById("summary").innerText = sections["EXECUTIVE SUMMARY"].join("\n");
+    document.getElementById("urgent").innerText = sections["TOP 3 URGENT ISSUES"].join("\n");
+    document.getElementById("burnout").innerText = sections["BURNOUT SIGNALS"].join("\n");
+    document.getElementById("deadlines").innerText = sections["DEADLINE RISKS"].join("\n");
+    document.getElementById("actions").innerText = sections["RECOMMENDED ACTIONS"].join("\n");
+
+    // --- TREND DETECTION ---
+    const trendRes = await fetch("http://127.0.0.1:5000/api/trends", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamData: teamData })
     });
 
+    const trendData = await trendRes.json();
+    document.getElementById("trends").innerText = trendData.trends;
 }
 </script>
 
 </body>
 </html>
+
